@@ -119,14 +119,19 @@ func stats(s *string) {
 
 func main() {
 	// get the flag data
-	url = flag.String("u", "", "URL for the web article")
-	articleClass = flag.String("a", "", "URL for the web article")
+	url = flag.String("u", "", "URL for the web article. (Required)")
+	articleClass = flag.String("a", "", "URL for the web article. (Required)")
 	textTag = flag.String("t", "p", "tag of text")
 	flag.BoolVar(&ifStats, "s", false, "show stats of the text")
 
 	flag.Parse()
 
 	// check if the required flags are not nil
+	if *url == "" || *articleClass == "" {
+		fmt.Println("invalid flags")
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	// store the text
 	var text string
