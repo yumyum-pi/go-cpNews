@@ -24,26 +24,6 @@ func errHandle(err error) {
 	}
 }
 
-func main() {
-	var statsB bool
-	url = flag.String("u", "", "URL for the web article")
-	articleClass = flag.String("a", "", "URL for the web article")
-	textTag = flag.String("t", "p", "tag of text")
-	flag.BoolVar(&statsB, "s", false, "tag of text")
-
-	flag.Parse()
-	// fmt.Println(*url, *articleClass, *textTag)
-
-	var s string
-
-	getData(&s)
-	fmt.Println(s)
-
-	if statsB {
-		stats(&s)
-	}
-}
-
 // get the data from the URL
 func getData(mainString *string) {
 	// get date from the URL
@@ -82,6 +62,26 @@ func getData(mainString *string) {
 	})
 }
 
+func numberOfChild(n *html.Node) int {
+	if n == nil {
+		return -1
+	}
+	count := 0
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		count++
+	}
+	return count
+}
+
+func wordCount(s *string) (int, map[string]int) {
+	words := strings.Fields(*s)
+	m := make(map[string]int)
+	for i := range *s {
+		m[string((*s)[i])]++
+	}
+	return len(words), m
+}
+
 // display stats
 func stats(s *string) {
 	// get the no. of characters
@@ -94,24 +94,21 @@ func stats(s *string) {
 	}
 }
 
-func wordCount(s *string) (int, map[string]int) {
-	words := strings.Fields(*s)
-	m := make(map[string]int)
-	for i := range *s {
-		m[string((*s)[i])]++
-	}
-	return len(words), m
-}
+func main() {
+	var statsB bool
+	url = flag.String("u", "", "URL for the web article")
+	articleClass = flag.String("a", "", "URL for the web article")
+	textTag = flag.String("t", "p", "tag of text")
+	flag.BoolVar(&statsB, "s", false, "tag of text")
 
-func numberOfChild(n *html.Node) int {
-	if n == nil {
-		return -1
-	}
+	flag.Parse()
 
-	count := 0
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		count += 1
-	}
+	var s string
 
-	return count
+	getData(&s)
+	fmt.Println(s)
+
+	if statsB {
+		stats(&s)
+	}
 }
