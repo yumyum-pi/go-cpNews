@@ -17,6 +17,9 @@ var url *string
 var articleClass *string
 var textTag *string
 var ifStats bool
+var ifHelp bool
+
+const discription = "cpNews is tool to scrap text from articles."
 
 // write a better error handler
 func errHandle(err error) {
@@ -120,11 +123,20 @@ func stats(s *string) {
 func main() {
 	// get the flag data
 	url = flag.String("u", "", "URL for the web article. (Required)")
-	articleClass = flag.String("a", "", "URL for the web article. (Required)")
-	textTag = flag.String("t", "p", "tag of text")
-	flag.BoolVar(&ifStats, "s", false, "show stats of the text")
+	articleClass = flag.String("a", "", "tag of the element containing article. (Required)")
+	textTag = flag.String("t", "p", "tag of the elements containing text.")
+	flag.BoolVar(&ifStats, "s", false, "show stats of the text.")
+	flag.BoolVar(&ifHelp, "h", false, "show flag defaults.")
 
 	flag.Parse()
+
+	// print help
+	if ifHelp {
+		// description
+		fmt.Println(discription)
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
 
 	// check if the required flags are not nil
 	if *url == "" || *articleClass == "" {
