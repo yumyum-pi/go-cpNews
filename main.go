@@ -51,23 +51,16 @@ func scrapeData(finalText *string) {
 
 		// query the text element
 		a.Find(*textTag).Each(func(j int, t *goquery.Selection) {
-			// get the number of children
-			c := t.Children()
-			n := len(c.Nodes)
-
-			// ignore the elements that have children
-			if n == 0 {
-				// get the text form the element
-				text = strings.TrimSpace(t.Text())
-				// add the text to the final text
-				// if the text is not blank
-				if text != "" {
-					// add extra space if the no the 1st element
-					if j != 0 {
-						*finalText += (" " + text)
-					} else {
-						*finalText += text
-					}
+			// get the text form the element
+			text = strings.TrimSpace(t.Text())
+			// add the text to the final text
+			// if the text is not blank
+			if text != "" {
+				// add extra space if the no the 1st element
+				if j != 0 {
+					*finalText += (" " + text)
+				} else {
+					*finalText += text
 				}
 			}
 
